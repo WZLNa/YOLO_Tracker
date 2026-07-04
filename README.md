@@ -39,7 +39,7 @@ gradlew.bat assembleDebug
 
 APK 输出：`app/build/outputs/apk/debug/app-debug.apk`
 
-> 也可直接下载 [Releases](releases/) 中的预编译 APK。
+> 也可直接下载 [Releases](https://github.com/WZLNa/YOLO_Tracker/releases/) 中的预编译 APK。
 
 ### 安装
 
