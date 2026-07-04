@@ -1,7 +1,8 @@
 # YOLO Tracker — Android 实时目标检测与追踪
 
-基于 **YOLOv8 + ONNX Runtime** 的 Android 端侧实时目标检测与多目标追踪应用。
-同时支持yolov26（已测试）
+基于 **YOLO + ONNX Runtime** 的 Android 端侧实时目标检测与多目标追踪应用。
+
+已测试：YOLO_V8、YOLO_V26
 
 无需联网，全部推理在手机 CPU 上完成。
 
@@ -49,7 +50,7 @@ APK 输出：`app/build/outputs/apk/debug/app-debug.apk`
 
 ## 导入自定义模型
 
-点击「⚙ 模型」→「选择文件」导入任意 ONNX 模型（需为 YOLOv8 end2end 格式）。
+点击「⚙ 模型」→「选择文件」导入任意 ONNX 模型（需为 YOLO end2end 格式）。
 
 ### 模型导出（Python）
 
