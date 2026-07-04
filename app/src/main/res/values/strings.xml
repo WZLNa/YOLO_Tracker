@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">YOLO Tracker</string>
+    <string name="tracking_active">跟踪中</string>
+    <string name="tracking_paused">已暂停</string>
+    <string name="objects_detected">已追踪物体</string>
+    <string name="fps_label">FPS</string>
+    <string name="camera_permission_rationale">需要使用摄像头进行实时目标检测与跟踪</string>
+    <string name="grant_permission">授予权限</string>
+    <string name="no_model">未找到模型文件，请将 yolo_model.onnx 放入 assets 目录</string>
+</resources>
