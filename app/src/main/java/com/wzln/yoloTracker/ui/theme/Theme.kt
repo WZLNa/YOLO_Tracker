@@ -1,4 +1,4 @@
-package com.example.yolotracker.ui.theme
+package com.wzln.yoloTracker.ui.theme
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme

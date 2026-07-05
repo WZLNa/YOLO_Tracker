@@ -1,4 +1,4 @@
-package com.example.yolotracker.ui
+package com.wzln.yoloTracker.ui
 
 import android.content.Context
 import android.graphics.Canvas
@@ -8,9 +8,9 @@ import android.graphics.Path
 import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
-import com.example.yolotracker.model.TrackedDetection
-import com.example.yolotracker.ui.theme.DetectionBoxInt
-import com.example.yolotracker.ui.theme.DetectionTrackLineInt
+import com.wzln.yoloTracker.model.TrackedDetection
+import com.wzln.yoloTracker.ui.theme.DetectionBoxInt
+import com.wzln.yoloTracker.ui.theme.DetectionTrackLineInt
 
 /**
  * 在摄像头预览上方绘制的检测框叠加层。

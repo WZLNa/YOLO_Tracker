@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.yolotracker"
+    namespace = "com.wzln.yoloTracker"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.yolotracker"
+        applicationId = "com.wzln.yoloTracker"
         minSdk = 26
         targetSdk = 34
         versionCode = 2

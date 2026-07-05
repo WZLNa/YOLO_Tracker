@@ -1,4 +1,4 @@
-package com.example.yolotracker.ui
+package com.wzln.yoloTracker.ui
 
 import android.Manifest
 import android.content.ClipData
@@ -46,9 +46,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.yolotracker.MainViewModel
-import com.example.yolotracker.model.TrackedDetection
-import com.example.yolotracker.ui.theme.*
+import com.wzln.yoloTracker.MainViewModel
+import com.wzln.yoloTracker.model.TrackedDetection
+import com.wzln.yoloTracker.ui.theme.*
 import kotlinx.coroutines.*
 import java.io.File
 import java.text.SimpleDateFormat

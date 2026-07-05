@@ -1,4 +1,4 @@
-package com.example.yolotracker.model
+package com.wzln.yoloTracker.model
 
 import android.graphics.RectF
 import kotlin.math.max

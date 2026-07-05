@@ -1,11 +1,11 @@
-package com.example.yolotracker
+package com.wzln.yoloTracker
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.example.yolotracker.ui.CameraScreen
-import com.example.yolotracker.ui.theme.YoloTrackerTheme
+import com.wzln.yoloTracker.ui.CameraScreen
+import com.wzln.yoloTracker.ui.theme.YoloTrackerTheme
 
 class MainActivity : ComponentActivity() {
 

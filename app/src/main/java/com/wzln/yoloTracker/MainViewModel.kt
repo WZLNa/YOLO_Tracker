@@ -1,13 +1,13 @@
-package com.example.yolotracker
+package com.wzln.yoloTracker
 
 import android.app.Application
 import android.graphics.Bitmap
 import android.os.SystemClock
 import androidx.lifecycle.AndroidViewModel
-import com.example.yolotracker.model.IOUTracker
-import com.example.yolotracker.model.LoadResult
-import com.example.yolotracker.model.TrackedDetection
-import com.example.yolotracker.model.YoloDetector
+import com.wzln.yoloTracker.model.IOUTracker
+import com.wzln.yoloTracker.model.LoadResult
+import com.wzln.yoloTracker.model.TrackedDetection
+import com.wzln.yoloTracker.model.YoloDetector
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
