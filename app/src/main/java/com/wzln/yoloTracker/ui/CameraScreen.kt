@@ -78,7 +78,7 @@ fun CameraScreen(
 
     // 对话框
     var showModelDialog by remember { mutableStateOf(false) }
-    var labelNotFoundInfo by remember { mutableStateOf<LabelNotFoundInfo?>(null) }
+    var labelSelectInfo by remember { mutableStateOf<LabelSelectInfo?>(null) }
     var unsupportedFormatInfo by remember { mutableStateOf<UnsupportedFormatInfo?>(null) }
     var pendingModelFile by remember { mutableStateOf<File?>(null) }
 
@@ -96,10 +96,7 @@ fun CameraScreen(
 
     fun loadModelWithLabel(modelFile: File, labelFile: File?) {
         scope.launch(Dispatchers.IO) {
-            val result = viewModel.loadFromFile(modelFile, labelFile)
-            if (result.success && !result.labelsFound) {
-                withContext(Dispatchers.Main) { labelNotFoundInfo = LabelNotFoundInfo(modelFile.name) }
-            }
+            viewModel.loadFromFile(modelFile, labelFile)
         }
     }
 
@@ -124,12 +121,10 @@ fun CameraScreen(
                     return@launch
                 }
                 val modelFile = copyUriToInternal(context, uri, "model_${System.currentTimeMillis()}.onnx") ?: return@launch
-                val result = viewModel.loadFromFile(modelFile)
-                if (result.success && !result.labelsFound) {
-                    withContext(Dispatchers.Main) {
-                        pendingModelFile = modelFile
-                        labelNotFoundInfo = LabelNotFoundInfo(modelFile.name)
-                    }
+                viewModel.loadFromFile(modelFile)
+                withContext(Dispatchers.Main) {
+                    pendingModelFile = modelFile
+                    labelSelectInfo = LabelSelectInfo(modelFile.name)
                 }
             }
         }
@@ -262,12 +257,12 @@ fun CameraScreen(
                 onDismiss = { showModelDialog = false }
             )
         }
-        labelNotFoundInfo?.let { info ->
-            LabelNotFoundDialog(
+        labelSelectInfo?.let { info ->
+            LabelSelectDialog(
                 modelName = info.modelName,
-                onSelectFile = { labelNotFoundInfo = null; labelFilePicker.launch(arrayOf("text/plain", "*/*")) },
-                onSkip = {
-                    pendingModelFile = null; labelNotFoundInfo = null
+                onSelectFile = { labelSelectInfo = null; labelFilePicker.launch(arrayOf("text/plain", "*/*")) },
+                onUseDefault = {
+                    pendingModelFile = null; labelSelectInfo = null
                 }
             )
         }
@@ -641,7 +636,7 @@ private fun ModelSwitchDialog(onSelectFile: () -> Unit, onUseBuiltIn: () -> Unit
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text("切换模型", color = OnSurface) },
-        text = { Column { Text("当前: $currentModelName", style = MaterialTheme.typography.bodySmall, color = OnSurface.copy(alpha = 0.6f)); Spacer(Modifier.height(12.dp)); Text("选择 ONNX 模型文件（需配套 labels.txt 放在同目录）", style = MaterialTheme.typography.bodySmall, color = OnSurface.copy(alpha = 0.8f)) } },
+        text = { Column { Text("当前: $currentModelName", style = MaterialTheme.typography.bodySmall, color = OnSurface.copy(alpha = 0.6f)); Spacer(Modifier.height(12.dp)); Text("选择 ONNX 模型文件，加载后可选择自定义标签文件", style = MaterialTheme.typography.bodySmall, color = OnSurface.copy(alpha = 0.8f)) } },
         confirmButton = { TextButton(onClick = onSelectFile) { Text("选择文件") } },
         dismissButton = { Row { TextButton(onClick = onUseBuiltIn) { Text("恢复内置") }; TextButton(onClick = onDismiss) { Text("取消") } } },
         containerColor = Surface, titleContentColor = OnSurface, textContentColor = OnSurface.copy(alpha = 0.8f)
@@ -649,13 +644,13 @@ private fun ModelSwitchDialog(onSelectFile: () -> Unit, onUseBuiltIn: () -> Unit
 }
 
 @Composable
-private fun LabelNotFoundDialog(modelName: String, onSelectFile: () -> Unit, onSkip: () -> Unit) {
+private fun LabelSelectDialog(modelName: String, onSelectFile: () -> Unit, onUseDefault: () -> Unit) {
     AlertDialog(
-        onDismissRequest = onSkip,
-        title = { Text("未找到标签文件", color = OnSurface) },
-        text = { Column { Text("模型 \"$modelName\" 加载成功，但未找到配套标签文件。", style = MaterialTheme.typography.bodyMedium, color = OnSurface.copy(alpha = 0.8f)); Spacer(Modifier.height(8.dp)); Text("请选择标签文件（.txt），或跳过使用默认标签。", style = MaterialTheme.typography.bodySmall, color = OnSurface.copy(alpha = 0.6f)) } },
+        onDismissRequest = onUseDefault,
+        title = { Text("选择标签来源", color = OnSurface) },
+        text = { Column { Text("模型 \"$modelName\" 已加载。", style = MaterialTheme.typography.bodyMedium, color = OnSurface.copy(alpha = 0.8f)); Spacer(Modifier.height(8.dp)); Text("当前使用默认 COCO80 标签。如需自定义标签，请选择标签文件（.txt），每行一个类别名称。", style = MaterialTheme.typography.bodySmall, color = OnSurface.copy(alpha = 0.6f)) } },
         confirmButton = { TextButton(onClick = onSelectFile) { Text("选择标签文件", color = Primary) } },
-        dismissButton = { TextButton(onClick = onSkip) { Text("跳过") } },
+        dismissButton = { TextButton(onClick = onUseDefault) { Text("使用默认COCO80") } },
         containerColor = Surface, titleContentColor = OnSurface, textContentColor = OnSurface.copy(alpha = 0.8f)
     )
 }
@@ -701,7 +696,7 @@ private fun LoadingScreen(error: String? = null) {
 
 // ─── 工具 ────────────────────────────────────────────────
 
-private data class LabelNotFoundInfo(val modelName: String)
+private data class LabelSelectInfo(val modelName: String)
 private data class UnsupportedFormatInfo(val fileName: String)
 private val UNSUPPORTED_MODEL_EXTS = listOf(".pt", ".pth", ".pkl", ".torchscript", ".ptl")
 

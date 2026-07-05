@@ -122,7 +122,7 @@ class YoloDetector(private val context: Context) {
         }
     }
 
-    /** 从文件加载模型（ONNX） */
+    /** 从文件加载模型（ONNX）。labelFile 为 null 时使用默认 COCO80 标签。 */
     fun loadFromFile(modelFile: File, labelFile: File? = null): LoadResult {
         return try {
             close()
@@ -131,31 +131,16 @@ class YoloDetector(private val context: Context) {
             initOnnxSession(modelBytes)
             backend = Backend.ONNX
 
-            var labelsFound = false
-            var labelFileSearched: String? = null
-
-            labels = when {
-                labelFile != null && labelFile.exists() -> { labelsFound = true; loadLabelsFromFile(labelFile) }
-                else -> {
-                    val auto = File(modelFile.parent, modelFile.nameWithoutExtension + ".txt")
-                    labelFileSearched = auto.absolutePath
-                    if (auto.exists()) { labelsFound = true; loadLabelsFromFile(auto) }
-                    else {
-                        val parent = File(modelFile.parent, "labels.txt")
-                        labelFileSearched = parent.absolutePath
-                        if (parent.exists()) { labelsFound = true; loadLabelsFromFile(parent) }
-                        else {
-                            labelsFound = false
-                            COCO_LABELS
-                        }
-                    }
-                }
+            labels = if (labelFile != null && labelFile.exists()) {
+                loadLabelsFromFile(labelFile)
+            } else {
+                COCO_LABELS
             }
 
             currentModelPath = modelFile.absolutePath
             currentModelName = modelFile.name
             lastError = null
-            LoadResult(success = true, labelsFound = labelsFound, labelFileSearched = labelFileSearched)
+            LoadResult(success = true)
         } catch (e: Exception) {
             val msg = e.message ?: "未知错误"
             lastError = "加载 ${modelFile.name} 失败: $msg"

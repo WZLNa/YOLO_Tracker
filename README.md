@@ -15,7 +15,7 @@
 - 实时摄像头检测 + 多目标 IOU 追踪（ID 分配、轨迹线绘制）
 - 内置 YOLOv26 COCO 预训练模型（80 类），开箱即用
 - 应用内「选择文件」导入任意 ONNX 模型，无需重新打包
-- 无标签文件时自动使用 COCO 80 类标签
+- 导入模型后弹出标签选择对话框：可选择自定义标签文件，或使用默认 COCO 80 类标签
 - 置信度阈值滑块实时调节
 - 数码变焦（双指缩放 + 滑块）
 - 前 / 后摄像头切换
@@ -52,6 +52,10 @@ APK 输出：`app/build/outputs/apk/debug/app-debug.apk`
 
 点击「⚙ 模型」→「选择文件」导入任意 ONNX 模型（需为 YOLO end2end 格式）。
 
+导入流程分两步：
+1. 选择 ONNX 模型文件，自动使用 COCO80 标签加载
+2. 弹出标签选择对话框：**「选择标签文件」** 加载自定义 labels.txt，或 **「使用默认COCO80」** 保持当前标签
+
 ### 模型导出（Python）
 
 ```bash
@@ -64,7 +68,7 @@ python export_model_end2endONNX.py 你的模型.pt [imgsz]
 
 ### 标签文件
 
-模型同目录下的 `labels.txt`（每行一个类别名）会被自动加载。无标签文件时默认使用 COCO 80 类标签。
+labels.txt 每行一个类别名称。导入模型后通过对话框手动选择，不再自动识别同目录文件。
 
 ## 技术栈
 
@@ -89,7 +93,7 @@ CameraX YUV_420_888 → NV21 → JPEG(95%) → Bitmap
 ## 项目结构
 
 ```
-├── app/src/main/java/com/example/yolotracker/
+├── app/src/main/java/com/wzln/yoloTracker/
 │   ├── MainActivity.kt              # 入口
 │   ├── MainViewModel.kt             # 状态管理 + 帧处理
 │   ├── model/
@@ -105,7 +109,7 @@ CameraX YUV_420_888 → NV21 → JPEG(95%) → Bitmap
 │   └── labels.txt                   # 类别标签
 ├── export_model_end2endONNX.py      # 模型导出脚本
 └── releases/
-    ├── YoloTracker-v1.0.apk         # 预编译 APK
+    ├── YoloTracker-v1.0.1.apk       # 预编译 APK
     └── yolo26n.onnx                 # 内置模型（备用）
 ```
 
