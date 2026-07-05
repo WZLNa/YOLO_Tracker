@@ -145,7 +145,7 @@ class YoloDetector(private val context: Context) {
                         labelFileSearched = parent.absolutePath
                         if (parent.exists()) { labelsFound = true; loadLabelsFromFile(parent) }
                         else {
-                            labelsFound = true
+                            labelsFound = false
                             COCO_LABELS
                         }
                     }
